@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <title>WorkFlow</title>
+        <link rel="stylesheet" href="style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="sidebar">
+            <!-- Sidebar content goes here -->
+            <h2>WorkFlow</h2>
+            <ul>
+                <li id="home-btn" style="text-align: center;">Home</li>
+                <li id="profile-btn" style="text-align: center;">Profile</li>
+                <li id="settings-btn" style="text-align: center;">Settings</li>
+            </ul>
+            <button id="theme-toggle">Dark Mode</button>
+            <button id="logout-btn" onclick="logout()" class="delete">Logout</button>
+        </div>
+        <div class="main-content">
+            <div id="home-section" class="page-section active">
+                <div class="container" style="margin: 0;">
+                    <h1 style="text-align: left;">Welcome back to WorkFlow!</h1>
+                </div>
+                <div class="container" style="margin: 0;">
+                    <h2 style="text-align: left;">Create Task</h2>
+                    <input type="text" id="subject" placeholder="Subject">
+                    <input type="text" id="task" placeholder="Task">
+                    <div class="difficulty-section">
+                        <label for="difficulty">Difficulty:</label>
+                        <input type="range" id="difficulty" min="1" max="3" value="2" class="difficulty-slider">
+                        <span id="difficulty-label">Normal</span>
+                    </div>
+                    <input type="date" id="date">
+                    <button onclick="addHomework()">+ New Task</button>
+                </div>
+
+                <div class="container" style="margin: 0;">
+                    <ul id="list"></ul>
+                </div>
+            </div>
+            <div id="profile-section" class="page-section">
+                <div class="container" style="margin: 0;">
+                    <h1>Profile</h1> 
+                    <!-- Profile content will go here -->
+                </div>
+            </div>
+            <div id="settings-section" class="page-section">
+                <div class="container" style="margin: 0;">
+                    <h1>Settings</h1>
+                    <!-- Settings content will go here -->
+                </div>
+            </div>
+        </div>
+        <script type="module" src="app.js"></script>
+    </body>
+</html>

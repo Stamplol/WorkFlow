@@ -50,6 +50,12 @@ async function loadHomework() {
       delBtn.textContent = "Delete";
       delBtn.onclick = () => deleteHomework(docSnap.id);
 
+      // Edit button placeholder (functionality to be added later)
+      const editBtn = document.createElement("button");
+      editBtn.textContent = "Edit";
+      editBtn.onclick = () => openEditPopup(docSnap.id, hw);
+
+      li.appendChild(editBtn);
       li.appendChild(delBtn);
       list.appendChild(li);
     }
@@ -85,6 +91,53 @@ function updateDifficultyLabel() {
   const difficulty = document.getElementById("difficulty").value;
   const labels = { "1": "Easy", "2": "Normal", "3": "Hard" };
   document.getElementById("difficulty-label").textContent = labels[difficulty];
+}
+
+// popup expression helpers
+let currentEditId = null;
+
+function updateEditDifficultyLabel() {
+  const difficulty = document.getElementById("edit-difficulty").value;
+  const labels = { "1": "Easy", "2": "Normal", "3": "Hard" };
+  document.getElementById("edit-difficulty-label").textContent = labels[difficulty];
+}
+
+document.getElementById("edit-difficulty").addEventListener("input", updateEditDifficultyLabel);
+
+document.getElementById("popup-cancel-btn").addEventListener("click", closePopup);
+
+document.getElementById("popup-save-btn").addEventListener("click", async () => {
+  if (!currentEditId) return;
+  const updates = {
+    subject: document.getElementById("edit-subject").value,
+    task: document.getElementById("edit-task").value,
+    date: document.getElementById("edit-date").value,
+    difficulty: parseInt(document.getElementById("edit-difficulty").value, 10)
+  };
+  await updateHomework(currentEditId, updates);
+  closePopup();
+});
+
+function closePopup() {
+  document.getElementById("edit-popup").classList.add("hidden");
+  document.getElementById("popup-overlay").classList.remove("active");
+}
+
+async function openEditPopup(id, hw) {
+  currentEditId = id;
+  document.getElementById("edit-subject").value = hw.subject || "";
+  document.getElementById("edit-task").value = hw.task || "";
+  document.getElementById("edit-date").value = hw.date || "";
+  document.getElementById("edit-difficulty").value = hw.difficulty || 2;
+  updateEditDifficultyLabel();
+  document.getElementById("edit-popup").classList.remove("hidden");
+  document.getElementById("popup-overlay").classList.add("active");
+}
+
+async function updateHomework(id, updates) {
+  const ref = doc(db, "homework", id);
+  await updateDoc(ref, updates);
+  loadHomework();
 }
 
 document.getElementById("difficulty").addEventListener("input", updateDifficultyLabel);
